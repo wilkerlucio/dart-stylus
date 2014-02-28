@@ -71,7 +71,7 @@ Compiler on Editor Build
 We also provide a build helper if you wanna your `.styl` files to automatic compile to `.css` on save using Dart Editor, to setup that you gonna need to create a file called `build.dart` on your project root (if you don't have it already), having it, just base the setup on the following example:
 
 ```dart
-import 'package:stylus/stylus.dart'
+import 'package:stylus/stylus.dart';
 
 void main(List<String> args) {
   buildStylus(args);
@@ -81,7 +81,7 @@ void main(List<String> args) {
 You can provide custom options if you want:
 
 ```dart
-import 'package:stylus/stylus.dart'
+import 'package:stylus/stylus.dart';
 
 void main(List<String> args) {
   buildStylus(args, new StylusOptions(use: ['nib'], lineNumbers: true, includeCss: true, compress: true));
