@@ -7,5 +7,6 @@ import 'dart:convert';
 import 'package:editor_build/editor_build.dart';
 import 'package:path/path.dart' as Path;
 
-part 'src/stylus/stylus.dart';
-part 'src/stylus/build.dart';
+part 'src/stylus/stylus_process.dart';
+part 'src/stylus/editor_build.dart';
+part 'src/stylus/stylus_options.dart';

@@ -23,15 +23,19 @@ npm install -g stylus
 Usage
 -----
 
-To compile Stylus code to CSS is actually pretty easy, an example is better than words for this one:
+Use StylusProcess to compile Stylus code into CSS, the easiest
+way to call is by using the [start] method:
 
 ```dart
 import 'package:stylus/stylus.dart';
 
-Stylus.fromPath('file.styl').pipe(new File('output.css').openWrite());
+StylusProcess.start(new StylusOptions(path: 'file.styl')).pipe(new File('output.css').openWrite());
 ```
 
-You can also compiling from a `String`
+As you can see, the [start] returns a [Stream] that you can use to pipe
+strait on the result.
+
+You can also compile from a [String]:
 
 ```dart
 import 'dart:convert';
@@ -44,10 +48,22 @@ var input = '''
         color: blue
 ''';
 
-Stylus.fromString('file.styl').transform(ASCII.decoder).single.then((String css) {
+Stylus.fromString(new StylusOptions(input: input)).pipe(new File('output.css').openWrite());
+```
+
+And finally, a tip on how to get the compiled content as [String]
+
+```dart
+import 'dart:convert';
+import 'package:stylus/stylus.dart';
+
+StylusProcess.start(new StylusOptions(path: 'app.styl')).transform(ASCII.decoder).single.then((String css) {
   print(css); // body .class .internal { color: #00f; }
 });
 ```
+
+There are many other options that you can send to [StylusOptions] to configure
+the compilation, check the constructor arguments at [StylusOptions]
 
 Compiler on Editor Build
 ------------------------
@@ -59,5 +75,15 @@ import 'package:stylus/stylus.dart'
 
 void main(List<String> args) {
   buildStylus(args);
+}
+```
+
+You can provide custom options if you want:
+
+```dart
+import 'package:stylus/stylus.dart'
+
+void main(List<String> args) {
+  buildStylus(args, new StylusOptions(use: ['nib'], lineNumbers: true, includeCss: true, compress: true));
 }
 ```
