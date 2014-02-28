@@ -15,7 +15,7 @@ dependencies:
   stylus: any
 ```
 
-You also gonna need to have `stylus` command into your path. To install stylus, run (you must have Node and NPM before):
+You also gonna need to have `stylus` command into your path. To install stylus, run (you must have [Node](http://nodejs.org/) and [NPM](https://npmjs.org/) installed before):
 ```
 npm install -g stylus
 ```
