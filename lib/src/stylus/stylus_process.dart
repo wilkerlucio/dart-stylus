@@ -63,9 +63,7 @@ class StylusProcess {
 
     _started = true;
 
-    _spawn().then(_setupProcess).catchError((err) {
-      _dispatchError(err);
-    });
+    _spawn().then(_setupProcess).catchError(_dispatchError);
   }
 
   Future<Process> _spawn() {
@@ -106,9 +104,7 @@ class StylusProcess {
   }
 
   void _processError() {
-    _process.stderr.transform(ASCII.decoder).single.then((String errorString) {
-      _dispatchError(errorString);
-    });
+    _process.stderr.transform(ASCII.decoder).single.then(_dispatchError);
   }
 
   void _dispatchError(err) {
