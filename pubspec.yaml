@@ -1,5 +1,5 @@
 name: stylus
-version: 0.1.0
+version: 0.1.1
 author: Wilker Lucio <wilkerlucio@gmail.com>
 description: Stylus CLI wrapper for Dart
 homepage: https://github.com/wilkerlucio/dart-stylus
