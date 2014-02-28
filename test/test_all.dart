@@ -25,11 +25,11 @@ body div {
       });
 
       test('compiling file bad path', () {
-        expect(processPath('fixtures/not_here.styl'), throwsA('Error: ENOENT, lstat \'fixtures/not_here.styl\''));
+        expect(processPath('fixtures/not_here.styl'), throwsA(matches('Error: ENOENT')));
       });
 
       test('compiling file with syntax error', () {
-        expect(processPath('fixtures/simple_error.styl'), throwsA(startsWith('ParseError: ')));
+        expect(processPath('fixtures/simple_error.styl'), throwsA(matches('ParseError: ')));
       });
     });
 
@@ -52,7 +52,7 @@ body div {
       });
 
       test('syntax error', () {
-        expect(processString('body:bad:string'), throwsA(startsWith('ParseError: ')));
+        expect(processString('body:bad:string'), throwsA(matches('ParseError: ')));
       });
     });
   });

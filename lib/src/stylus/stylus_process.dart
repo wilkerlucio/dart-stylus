@@ -107,7 +107,7 @@ class StylusProcess {
 
   void _processError() {
     _process.stderr.transform(ASCII.decoder).single.then((String errorString) {
-      _dispatchError(errorString.split('\n').skip(4).join('\n').trim());
+      _dispatchError(errorString);
     });
   }
 
