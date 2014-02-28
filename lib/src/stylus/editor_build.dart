@@ -29,19 +29,36 @@ class _StylusBuilder {
   void build(List<String> args) {
     final opts = BuildOptions.parse(args);
 
-    opts.changed
+    _filterStylus(opts.changed, _buildStylusFile);
+    _filterStylus(opts.removed, _removeFile);
+  }
+
+  void _filterStylus(List<String> files, iterator(value)) {
+    files
       .where((String path) => Path.extension(path) == '.styl')
       .where((String path) => !Path.basename(path).startsWith('_'))
-      .forEach(_buildStylusFile);
+      .forEach(iterator);
   }
 
   void _buildStylusFile(String path) {
-    String dir = Path.dirname(path);
-    String out = Path.join(dir, Path.basenameWithoutExtension(path) + '.css');
+    String out = _outputPath(path);
 
     new StylusProcess(_options.copy..path = path).stream.pipe(new File(out).openWrite()).catchError((err) {
       print(err);
       exit(1);
     });
+  }
+
+  void _removeFile(String path) {
+    var file = new File(_outputPath(path));
+
+    file.exists().then((bool exists) {
+      if (exists) file.delete();
+    });
+  }
+
+  String _outputPath(String path) {
+    String dir = Path.dirname(path);
+    return Path.join(dir, Path.basenameWithoutExtension(path) + '.css');
   }
 }
