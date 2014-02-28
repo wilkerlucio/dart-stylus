@@ -48,7 +48,7 @@ var input = '''
         color: blue
 ''';
 
-Stylus.fromString(new StylusOptions(input: input)).pipe(new File('output.css').openWrite());
+StylusProcess.start(new StylusOptions(input: input)).pipe(new File('output.css').openWrite());
 ```
 
 And finally, a tip on how to get the compiled content as [String]
