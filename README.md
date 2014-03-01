@@ -63,7 +63,7 @@ StylusProcess.start(new StylusOptions(path: 'app.styl')).transform(ASCII.decoder
 ```
 
 There are many other options that you can send to [StylusOptions] to configure
-the compilation, check the constructor arguments at [StylusOptions]
+the compilation, check the constructor arguments at [StylusOptions](https://github.com/wilkerlucio/dart-stylus/blob/master/lib/src/stylus/stylus_options.dart#L7-L59)
 
 Compiler on Editor Build
 ------------------------
