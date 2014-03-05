@@ -87,3 +87,33 @@ void main(List<String> args) {
   buildStylus(args, new StylusOptions(use: ['nib'], lineNumbers: true, includeCss: true, compress: true));
 }
 ```
+
+Transformer in a Pub build
+--------------------------
+
+If you're using pub build or pub serve for your application, you can use the [StylusTransformer]
+to generate .css from .styl or .stylus files.  It will also replace <style> tags with a type of
+"text/stylus" with compiled CSS.
+
+To add the transformer to your build:
+
+```
+dependencies:
+    ...
+    stylus: any
+    ...
+transformers:
+- stylus
+```
+
+You can also pass through any valid option in [StylusOptions], eg:
+
+```
+dependencies:
+    ...
+    stylus: any
+    ...
+transformers:
+- stylus:
+    compress: true
+```

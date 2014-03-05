@@ -70,6 +70,19 @@ class StylusOptions {
     this.includeCss:   false,
     this.resolveUrls:  false});
 
+  factory StylusOptions.fromMap(Map<String,Object> config) =>
+      new StylusOptions(
+          path: config["path"],
+          input: config["input"],
+          use: config["use"],
+          compare: config["compare"],
+          compress: config["compress"],
+          firebug: config["firebug"],
+          includeCss: config["includeCss"],
+          inlineImages: config["inlineImages"],
+          lineNumbers: config["lineNumbers"],
+          resolveUrls: config["resolveUrls"]);
+
   List<String> get args {
     _validate();
 
@@ -92,15 +105,30 @@ class StylusOptions {
     return builder;
   }
 
-  StylusOptions get copy => new StylusOptions(
-      path: path,
-      input: input,
-      use: use == null ? null : new List.from(use),
-      inlineImages: inlineImages,
-      compress: compress,
-      compare: compare,
-      firebug: firebug,
-      lineNumbers: lineNumbers);
+  StylusOptions get copy => copyWith();
+
+  // TODO allow unsetting with null, dartdoc
+  StylusOptions copyWith({
+    String path: "",
+    String input: "",
+    List<String> use: const [],
+    bool inlineImages,
+    bool compress,
+    bool compare,
+    bool firebug,
+    bool lineNumbers,
+    bool includeCss,
+    bool resolveUrls}) {
+    return new StylusOptions(
+          path: path == "" ? this.path : path,
+          input: input == "" ? this.input : input,
+          use: const [] == use ? this.use : use,
+          inlineImages: inlineImages == null ? this.inlineImages : inlineImages,
+          compress: compress == null ? this.compress : compress,
+          compare: compare == null ? this.compare : compare,
+          firebug: firebug == null ? this.firebug : firebug,
+          lineNumbers: lineNumbers == null ? this.lineNumbers : lineNumbers);
+  }
 
   void _validate() {
     if (path == null && input == null)
