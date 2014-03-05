@@ -91,9 +91,9 @@ void main(List<String> args) {
 Transformer in a Pub build
 --------------------------
 
-If you're using pub build or pub serve for your application, you can use the [StylusTransformer]
-to generate .css from .styl or .stylus files.  It will also replace <style> tags with a type of
-"text/stylus" with compiled CSS.
+If you're using pub build or pub serve for your application, you can use the [StylusTransformer](https://github.com/wilkerlucio/dart-stylus/blob/master/lib/transformer.dart)
+to generate .css from .styl or .stylus files.  It will also replace &lt;style> tags with a type attribute of
+"text/stylus" in HTML files with compiled CSS.
 
 To add the transformer to your build:
 
@@ -117,3 +117,5 @@ transformers:
 - stylus:
     compress: true
 ```
+
+[StylusOptions]: https://github.com/wilkerlucio/dart-stylus/blob/master/lib/src/stylus/stylus_options.dart#L7-L59
