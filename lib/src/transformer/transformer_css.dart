@@ -13,27 +13,29 @@ class StylusCssTransformer extends Transformer with DeclaringTransformer {
   String get allowedExtensions => ".styl";
 
   @override
-  Future apply(Transform transform) {
-    return transform.primaryInput.readAsString().then((input) {
-
-      transform.addOutput(new Asset.fromStream(_calculateCssAssetId(
-          transform.primaryInput.id), StylusProcess.start(protoOptions.copyWith(input:
-          input)).handleError((e) => transform.logger.error(e.toString()))));
-
-    });
-  }
+  Future apply(Transform transform) =>
+      transform.primaryInput.readAsString().then((input) {
+        UTF8.decodeStream(StylusProcess.start(protoOptions.copyWith(input: input)))
+        .then((css) { transform.addOutput(new Asset.fromString(_calculateCssAssetId(transform.primaryInput.id), css)); } )
+        .catchError((e) { transform.logger.error(e.toString()); });
+      });
 
   @override
-  Future declareOutputs(DeclaringTransform transform) {
-    return new Future.sync(() {
-      transform.declareOutput(_calculateCssAssetId(transform.primaryInput.id));
-    });
-  }
+  Future declareOutputs(DeclaringTransform transform) =>
+      new Future.sync(() {
+        transform.declareOutput(_calculateCssAssetId(transform.primaryInput.id));
+      });
 
 }
 
 /**
  * Create a new [AssetId] for the given [assetId] with it's extension changed to .css
  */
-AssetId _calculateCssAssetId(AssetId assetId) => new AssetId(assetId.package,
-    assetId.path.replaceAll(assetId.extension, ".css")); // TODO Only replace extension
+AssetId _calculateCssAssetId(AssetId assetId) =>
+    new AssetId(assetId.package, replaceLast(assetId.path, assetId.extension, ".css"));
+
+/**
+ * Replace the last occurence of [from] in [string] with [replace]
+ */
+String replaceLast(String string, Pattern from, String replace) =>
+    string.substring(0, string.lastIndexOf(from)) + replace;

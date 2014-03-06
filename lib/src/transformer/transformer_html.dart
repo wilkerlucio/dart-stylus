@@ -20,28 +20,27 @@ class StylusHtmlTransformer extends Transformer with DeclaringTransformer {
   Future apply(Transform transform) =>
       _readPrimaryAsHtml(transform).then((doc) =>
             Future.wait(
-              extractStylusTags(doc).map((elem) => 
+              extractStylusTags(doc).map((elem) =>
                 compileStylusBlock(protoOptions.copyWith(input: elem.text))
                 .then((css) { updateElement(elem, css); })
-                .catchError((e) => transform.logger.error(e.toString(), span: elem.sourceSpan))
+                .catchError((e) { transform.logger.error(e.toString(), span: elem.sourceSpan); })
               )
             )
             .then((_) { transform.addOutput(new Asset.fromString(transform.primaryInput.id, doc.outerHtml)); })
         );
 
   @override
-  Future declareOutputs(DeclaringTransform transform) {
-    return new Future.sync(() {
-      transform.declareOutput(transform.primaryInput.id);
-    });
-  }
+  Future declareOutputs(DeclaringTransform transform) =>
+      new Future.sync(() {
+        transform.declareOutput(transform.primaryInput.id);
+      });
 
 }
 
-List<Element> extractStylusTags(Document doc) => 
+List<Element> extractStylusTags(Document doc) =>
     doc.querySelectorAll("style").where((e) => STYLUS_MEDIA_TYPE == e.attributes["type"]);
 
-Future<String> compileStylusBlock(StylusOptions options) => 
+Future<String> compileStylusBlock(StylusOptions options) =>
     UTF8.decodeStream(StylusProcess.start(options));
 
 void updateElement(Element elem, String css) {
@@ -76,6 +75,6 @@ Future<Document> _readPrimaryAsHtml(Transform transform) {
   var asset = transform.primaryInput;
   var id = asset.id;
   return asset.readAsString().then((content) {
-    return _parseHtml(content, id.path, transform.logger);
+    return _parseHtml(content, id.path, transform.logger, checkDocType: false);
   });
 }
