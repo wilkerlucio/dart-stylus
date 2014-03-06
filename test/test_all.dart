@@ -129,5 +129,78 @@ body div {
       expect(copy.use, ['nib', 'other']);
       expect(options.use, ['nib']);
     });
+    group('copyWith', () {
+      const stylus = """
+h1
+ color red
+""";
+
+      test('set attributes', () {
+        var options = new StylusOptions(path: 'path', use: ['nib'], inlineImages: true, compress: true, compare: true, firebug: true, lineNumbers: true, includeCss: true, resolveUrls: true);
+        var copy = options.copyWith(path: null, input: stylus, use: null, inlineImages: false, compress: false, compare: false, firebug: false, lineNumbers: false, includeCss: false, resolveUrls: false);
+        expect(copy.path, null);
+        expect(copy.input, stylus);
+        expect(copy.use, null);
+        expect(copy.inlineImages, false);
+        expect(copy.compress, false);
+        expect(copy.firebug, false);
+        expect(copy.lineNumbers, false);
+        expect(copy.includeCss, false);
+        expect(copy.resolveUrls, false);
+      });
+      test('no attributes', () {
+        var options = new StylusOptions(path: 'path', use: ['nib'], inlineImages: true, compress: true, compare: true, firebug: true, lineNumbers: true, includeCss: true, resolveUrls: true);
+        var copy = options.copyWith();
+        expect(copy.path, options.path);
+        expect(copy.input, options.input);
+        expect(copy.use, options.use);
+        expect(copy.inlineImages, options.inlineImages);
+        expect(copy.compress, options.compress);
+        expect(copy.firebug, options.firebug);
+        expect(copy.lineNumbers, options.lineNumbers);
+        expect(copy.includeCss, options.includeCss);
+        expect(copy.resolveUrls, options.resolveUrls);
+      });
+    });
+    group('fromMap', () {
+      test('empty map', () {
+        var options = new StylusOptions.fromMap({});
+        expect(options.path, null);
+        expect(options.input, null);
+        expect(options.use, null);
+        expect(options.inlineImages, null);
+        expect(options.compress, null);
+        expect(options.firebug, null);
+        expect(options.lineNumbers, null);
+        expect(options.includeCss, null);
+        expect(options.resolveUrls, null);
+      });
+      test('map', () {
+        final map = {
+                     "path": "path",
+                     "input": "input",
+                     "use": ["a","b"],
+                     "inlineImages": true,
+                     "compress": true,
+                     "firebug": true,
+                     "lineNumbers": true,
+                     "includeCss": true,
+                     "resolveUrls": true
+                   };
+        var options = new StylusOptions.fromMap(map);
+        expect(options.path, "path");
+        expect(options.input, "input");
+        expect(options.use, ["a","b"]);
+        expect(options.inlineImages, true);
+        expect(options.compress, true);
+        expect(options.firebug, true);
+        expect(options.lineNumbers, true);
+        expect(options.includeCss, true);
+        expect(options.resolveUrls, true);
+
+        map["use"].add("c");
+        expect(options.use, ["a","b"]);
+      });
+    });
   });
 }

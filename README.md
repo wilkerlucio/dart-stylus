@@ -87,3 +87,35 @@ void main(List<String> args) {
   buildStylus(args, new StylusOptions(use: ['nib'], lineNumbers: true, includeCss: true, compress: true));
 }
 ```
+
+Transformer in a Pub build
+--------------------------
+
+If you're using pub build or pub serve for your application, you can use the [StylusTransformer](https://github.com/wilkerlucio/dart-stylus/blob/master/lib/transformer.dart)
+to generate .css from .styl or .stylus files.  It will also replace &lt;style> tags with a type attribute of
+"text/stylus" in HTML files with compiled CSS.
+
+To add the transformer to your build:
+
+```
+dependencies:
+    ...
+    stylus: any
+    ...
+transformers:
+- stylus
+```
+
+You can also pass through any valid option in [StylusOptions], eg:
+
+```
+dependencies:
+    ...
+    stylus: any
+    ...
+transformers:
+- stylus:
+    compress: true
+```
+
+[StylusOptions]: https://github.com/wilkerlucio/dart-stylus/blob/master/lib/src/stylus/stylus_options.dart#L7-L59
